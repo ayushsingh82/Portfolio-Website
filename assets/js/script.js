@@ -189,4 +189,54 @@ if (navigationLinks.length > 0 && pages.length > 0) {
   }
 }
 
+// Project modal variables
+const projectModalTriggers = document.querySelectorAll("[data-project-modal-trigger]");
+const projectModal = document.querySelector("[data-project-modal]");
+const projectModalOverlay = document.querySelector("[data-project-overlay]");
+const projectModalCloseBtn = document.querySelector("[data-project-modal-close]");
+const projectModalTitle = document.querySelector("[data-project-modal-title]");
+const projectModalText = document.querySelector("[data-project-modal-text]");
+
+// Project modal toggle function
+const projectModalFunc = function () {
+  if (projectModal && projectModalOverlay) {
+    projectModal.classList.toggle("active");
+    projectModalOverlay.classList.toggle("active");
+  }
+}
+
+// Add click event to all project modal triggers (eye icons)
+if (projectModalTriggers.length > 0) {
+  for (let i = 0; i < projectModalTriggers.length; i++) {
+    projectModalTriggers[i].addEventListener("click", function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      // Get the project item
+      const projectItem = this.closest("[data-project-description]");
+      
+      if (projectItem) {
+        // Get project data
+        const projectTitle = projectItem.querySelector(".project-title").textContent;
+        const projectDescription = projectItem.getAttribute("data-project-description");
+        
+        // Update modal content
+        if (projectModalTitle) projectModalTitle.textContent = projectTitle;
+        if (projectModalText) projectModalText.textContent = projectDescription;
+        
+        // Show modal
+        projectModalFunc();
+      }
+    });
+  }
+}
+
+// Close modal events
+if (projectModalCloseBtn) {
+  projectModalCloseBtn.addEventListener("click", projectModalFunc);
+}
+if (projectModalOverlay) {
+  projectModalOverlay.addEventListener("click", projectModalFunc);
+}
+
 }); // End of DOMContentLoaded
